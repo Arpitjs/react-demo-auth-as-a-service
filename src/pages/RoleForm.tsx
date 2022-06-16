@@ -8,20 +8,17 @@ import { useSelector, useDispatch } from "react-redux";
 import { setPolicy } from "../redux/policyReducer";
 import client from "../utils/authClient";
 import axios from "axios";
-import { PermissionType } from "../interfaces";
+import { PermissionType, PolicyType } from "../interfaces";
 import { center } from "../utils/reusable_styles";
 import Input from "../components/Input";
 import RadioButton from "../components/RadioButton";
 import ButtonComp from "../components/Button";
-import SelectComponent from "../components/Select";
+import SelectComponent2 from "../components/Select2";
 
-const PolicyForm: FC<{ type: string }> = ({ type }) => {
+const RoleForm: FC<{ type: string }> = ({ type }) => {
   const { permission, policy } = client;
-  const [permissions, setPermissions] = useState<PermissionType[]>([]);
-  const [policies, setPolicies] = useState({
-    name: "",
-    kind: "",
-  });
+  const [policies, setPolicies] = useState<PolicyType[]>([]);
+  const [role, setRole] = useState<any>([]);
   const [errorX, setErrorX] = useState({
     error: false,
     helperText: "",
@@ -37,26 +34,19 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { policy2 } = useSelector((state: any) => state.policy);
+  const { role2 } = useSelector((state: any) => state.role);
   const params: Readonly<Params<string>> = useParams();
 
   useEffect(() => {
     (async () => {
-      const allPermissions: PermissionType[] = await permission.getAll();
-      setPermissions(allPermissions);
+      const allPolicies: any = await policy.getAll();
+      setPolicies(allPolicies);
     })();
   }, []);
 
   useEffect(() => {
-    if (type === "edit") setPolicies(policy2);
+    if (type === "edit") setRole(role2);
   }, []);
-
-  const handleRadio = (event: SelectChangeEvent) => {
-    setPolicies((prev) => ({
-      ...prev,
-      kind: event.target.value as string,
-    }));
-  };
 
   function handleBack() {
     navigate("/");
@@ -65,10 +55,7 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setPolicies((prev) => ({
-      ...prev,
-      name: value,
-    }));
+    setRole({ name: value });
     value === ""
       ? setErrorX({
           error: true,
@@ -82,25 +69,22 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
     let text = "";
     if (type === "create") {
       const toSend = {
-        ...policies,
-        permissionid: selected,
+        ...role,
+        policyid: selected,
       };
-      await axios.post(`http://localhost:8080/v1/policies/`, toSend);
+      await axios.post(`http://localhost:8080/v1/roles/`, toSend);
       // await policy.createWithAllowOrDeny(toSend);
       text = "created";
     } else {
-      // if (params.id) await policy.updateWithAllowOrDeny(params.id, policies);
-      await axios.put(
-        `http://localhost:8080/v1/policies/${params.id}`,
-        policies,
-      );
+      // if (params.id) await role.update(params.id, policies);
+      await axios.put(`http://localhost:8080/v1/roles/${params.id}`, role);
       text = "updated";
     }
-    toast.success(`policy ${text}!`);
+    toast.success(`role ${text}!`);
   }
 
   return (
-    <div style={{ position: "relative", backgroundColor: "white" }}>
+    <div style={{ position: "relative" }}>
       <ButtonAppBar />
       <Button
         variant="outlined"
@@ -119,34 +103,33 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
         }}
       >
         {" "}
-        {type === "create" ? "Create a Policy..." : `Edit: ${policy2.Name}... `}
+        {type === "create" ? "Create a Role..." : `Edit: ${role2.Name}... `}
       </p>
       <div style={center}>
         {type === "create" && (
-          <SelectComponent
-            permissions={permissions}
+          <SelectComponent2
+            policies={policies}
             handleChange={handleChange}
             selected={selected}
           />
         )}
         <Input
           type={type}
-          isEdit={policy2.Name}
+          isEdit={role2.Name}
           errorX={errorX}
           handleInputChange={handleInputChange}
-          operation="Policy Name"
+          operation="Role Name"
           _name="name"
         />
-        <RadioButton type={type} isEdit={policy2} handleRadio={handleRadio} />
         <ButtonComp
           handleSubmit={handleSubmit}
           type={type}
           errorX={errorX}
-          toValidate={[policies.name, policies.kind]}
+          toValidate={[role.name, true]}
         />
       </div>
     </div>
   );
 };
 
-export default PolicyForm;
+export default RoleForm;

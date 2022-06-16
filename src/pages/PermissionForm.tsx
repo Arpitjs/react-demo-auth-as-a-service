@@ -53,7 +53,6 @@ const PermissionForm: FC<{ type: string }> = ({ type }) => {
   };
 
   async function handleSubmit() {
-    console.log("perm k ayo hau", perm);
     let text = "";
     if (type === "create") {
       await permission.create(perm);
@@ -103,7 +102,7 @@ const PermissionForm: FC<{ type: string }> = ({ type }) => {
           handleSubmit={handleSubmit}
           type={type}
           errorX={errorX}
-          toValidate={[perm.resource, perm.action, true]}
+          toValidate={[perm.resource, perm.action]}
         />
       </div>
     </div>

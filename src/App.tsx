@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 import Dashboard from "./pages/Dashboard";
 import PolicyForm from "./pages/PolicyForm";
 import PermissionForm from "./pages/PermissionForm";
+import RoleForm from "./pages/RoleForm";
 
 function App() {
   return (
@@ -22,6 +23,8 @@ function App() {
             path="/edit-permission/:id"
             element={<PermissionForm type="edit" />}
           />
+          <Route path="/create-role" element={<RoleForm type="create" />} />
+          <Route path="/edit-role/:id" element={<RoleForm type="edit" />} />
         </Routes>
       </BrowserRouter>
     </>

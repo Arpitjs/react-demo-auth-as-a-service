@@ -6,6 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Chip from "@mui/material/Chip";
+import { PermissionType, PolicyType } from "../interfaces";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -27,19 +28,27 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
   };
 }
 
-export default function MultipleSelectChip({
-  permissions,
+interface SelectProps {
+  policies: PolicyType[];
+  selected: string[];
+  handleChange: (e: SelectChangeEvent<string[]>) => void;
+}
+
+export default function SelectComponent2({
+  policies,
   selected,
   handleChange,
-}: any) {
+}: SelectProps) {
   const theme = useTheme();
 
   const toRender = (selected: any) => {
     return (
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
         {selected.map((value: any) => {
-          const _p = permissions.find((p: any) => p.ID === value);
-          return <Chip key={value} label={_p.Resource} />;
+          const matchedPolicy = policies.find((p: any) => p.ID === value);
+          return (
+            <Chip key={value} label={matchedPolicy && matchedPolicy.Name} />
+          );
         })}
       </Box>
     );
@@ -48,25 +57,26 @@ export default function MultipleSelectChip({
   return (
     <div>
       <FormControl sx={{ m: 1, width: 300 }}>
-        <InputLabel id="demo-multiple-chip-label">Permission</InputLabel>
+        <InputLabel id="demo-multiple-chip-label">Policies</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
           multiple
           value={selected}
           onChange={handleChange}
-          input={<OutlinedInput id="select-multiple-chip" label="Permission" />}
+          input={<OutlinedInput id="select-multiple-chip" label="Policies" />}
           renderValue={toRender}
           MenuProps={MenuProps}
         >
-          {permissions &&
-            permissions.map((p: any) => (
+          {policies &&
+            policies.length &&
+            policies.map((p: any) => (
               <MenuItem
                 key={p.ID}
                 value={p.ID}
                 style={getStyles(p, selected, theme)}
               >
-                {p.Resource}
+                {p.Name}
               </MenuItem>
             ))}
         </Select>

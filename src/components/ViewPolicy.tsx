@@ -15,13 +15,11 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setPolicy } from "../redux/policyReducer";
 import client from "./../utils/authClient";
-import axios from "axios";
 import { PolicyType } from "../interfaces";
 import { imgStyle } from "../utils/reusable_styles";
 
 export default function ViewPolicy() {
   const { policy } = client;
-  const [pp, setPp] = useState<any>([]);
   const [policies, setPolicies] = useState<PolicyType[]>([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -35,8 +33,6 @@ export default function ViewPolicy() {
     (async () => {
       const allPolicies = await policy.getAll();
       setPolicies(allPolicies);
-      const x = await axios.get("http://localhost:8080/v1/policy-permission/");
-      setPp(x.data);
     })();
   }, []);
 

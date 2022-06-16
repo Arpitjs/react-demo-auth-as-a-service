@@ -22,8 +22,7 @@ const ButtonComp = ({
         marginTop: "20px",
       }}
       disabled={
-        (type !== "edit" || errorX.error) &&
-        (!toValidate[0] || !toValidate[1] || !toValidate[2])
+        (type !== "edit" || errorX.error) && (!toValidate[0] || !toValidate[1])
       }
       fullWidth
     >
