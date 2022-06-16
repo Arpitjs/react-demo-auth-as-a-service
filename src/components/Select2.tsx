@@ -26,18 +26,6 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
         : theme.typography.fontWeightMedium,
   };
 }
-const toRender = (selected: any, permissions: any) => {
-  return (
-    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-      {selected.map((value: any) => {
-        console.log("seleccted", selected);
-        const _p = permissions.find((p: any) => p.ID === value);
-        console.log("____p", _p);
-        <Chip key={value} label={_p.Resource} />;
-      })}
-    </Box>
-  );
-};
 
 export default function MultipleSelectChip({
   permissions,
@@ -45,6 +33,17 @@ export default function MultipleSelectChip({
   handleChange,
 }: any) {
   const theme = useTheme();
+
+  const toRender = (selected: any) => {
+    return (
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+        {selected.map((value: any) => {
+          const _p = permissions.find((p: any) => p.ID === value);
+          return <Chip key={value} label={_p.Resource} />;
+        })}
+      </Box>
+    );
+  };
 
   return (
     <div>
@@ -57,14 +56,7 @@ export default function MultipleSelectChip({
           value={selected}
           onChange={handleChange}
           input={<OutlinedInput id="select-multiple-chip" label="Permission" />}
-          // renderValue={() => toRender(selected, permissions)}
-          renderValue={(selected) => (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-              {selected.map((value: any) => (
-                <Chip key={value} label={value} />
-              ))}
-            </Box>
-          )}
+          renderValue={toRender}
           MenuProps={MenuProps}
         >
           {permissions &&

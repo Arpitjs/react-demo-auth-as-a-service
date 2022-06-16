@@ -98,7 +98,7 @@ export default function ViewPolicy() {
         </TableContainer>
       ) : (
         <div>
-          <img src="fixing.png" alt="fixing" style={imgStyle} />
+          <img src="fixing.png" alt="no policies" style={imgStyle} />
           <p style={{ textAlign: "center" }}>
             No Policies found. Create one yourself...
           </p>
