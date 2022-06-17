@@ -5,7 +5,7 @@ interface ButtonProps {
   handleSubmit: (e: React.MouseEvent<HTMLElement>) => void;
   type: string;
   errorX: errorInterface;
-  toValidate: Array<any>;
+  toValidate: string[];
 }
 
 const ButtonComp = ({

@@ -99,7 +99,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
         }}
       >
         {" "}
-        {type === "create" ? "Create a Role..." : `Edit: ${roleState.Name}... `}
+        {type === "create" ? "Create a Role" : `Edit: ${roleState.Name} `}
       </p>
       <div style={center}>
         {type === "create" && (

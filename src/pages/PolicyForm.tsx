@@ -93,7 +93,7 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
   }
 
   return (
-    <div style={{ position: "relative", backgroundColor: "white" }}>
+    <div style={{ position: "relative" }}>
       <ButtonAppBar />
       <Button
         variant="outlined"
@@ -112,9 +112,7 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
         }}
       >
         {" "}
-        {type === "create"
-          ? "Create a Policy..."
-          : `Edit: ${policyState.Name}... `}
+        {type === "create" ? "Create a Policy" : `Edit: ${policyState.Name} `}
       </p>
       <div style={center}>
         {type === "create" && (
