@@ -130,8 +130,8 @@ export default function ViewPermission() {
               <TableRow>
                 <TableCell />
                 <TableCell>Permission ID</TableCell>
-                <TableCell>Permission Resource</TableCell>
                 <TableCell>Permission Action</TableCell>
+                <TableCell>Permission Resource</TableCell>
                 <TableCell>Actions</TableCell>
               </TableRow>
             </TableHead>

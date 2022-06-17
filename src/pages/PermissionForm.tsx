@@ -16,6 +16,7 @@ const PermissionForm: FC<{ type: string }> = ({ type }) => {
     resource: "",
     action: "",
   });
+
   const [errorX, setErrorX] = useState({
     error: false,
     helperText: "",
@@ -23,12 +24,12 @@ const PermissionForm: FC<{ type: string }> = ({ type }) => {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { permisison2 } = useSelector((state: any) => state.permission);
+  const { permissionState } = useSelector((state: any) => state.permission);
   const params: Readonly<Params<string>> = useParams();
 
   useEffect(() => {
     if (type === "edit") {
-      setPerm(permisison2);
+      setPerm(permissionState);
     }
   }, []);
 
@@ -79,12 +80,12 @@ const PermissionForm: FC<{ type: string }> = ({ type }) => {
       >
         {type === "create"
           ? "Create a Permission"
-          : `Edit Permission: ${permisison2.Resource}`}
+          : `Edit Permission: ${permissionState.Resource}`}
       </p>
       <div style={center}>
         <Input
           type={type}
-          isEdit={permisison2.Resource}
+          isEdit={permissionState.Resource}
           errorX={errorX}
           handleInputChange={handleInputChange}
           operation="Permisison Resource"
@@ -92,7 +93,7 @@ const PermissionForm: FC<{ type: string }> = ({ type }) => {
         />
         <Input
           type={type}
-          isEdit={permisison2.Action}
+          isEdit={permissionState.Action}
           errorX={errorX}
           handleInputChange={handleInputChange}
           operation="Permission Action"

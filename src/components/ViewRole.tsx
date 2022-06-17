@@ -34,12 +34,12 @@ function Row(props: rowType) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  function handleNavigate(r: any) {
+  function handleNavigate(r: RoleType) {
     navigate(`/edit-role/${r.ID}`);
     dispatch(setRoleX(r));
   }
 
-  async function handleDelete(r: any) {
+  async function handleDelete(r: RoleType) {
     await role.delete(r.ID);
     setRoles(await role.getAll());
     toast.warning("Role deleted!");
@@ -105,7 +105,7 @@ function Row(props: rowType) {
 
 export default function ViewRole() {
   const { role } = client;
-  const [roles, setRoles] = useState<any>([]);
+  const [roles, setRoles] = useState<RoleType[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -136,7 +136,7 @@ export default function ViewRole() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {roles.map((p: any) => (
+              {roles.map((p: RoleType) => (
                 <Row key={p.ID} row={p} role={role} setRoles={setRoles} />
               ))}
             </TableBody>

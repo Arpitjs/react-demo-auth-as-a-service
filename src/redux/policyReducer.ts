@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 export const policySlice = createSlice({
   name: "policy",
   initialState: {
-    policy2: {},
+    policyState: {},
   },
   reducers: {
     setPolicy: (state, action) => {
-      state.policy2 = action.payload;
+      state.policyState = action.payload;
     },
   },
 });

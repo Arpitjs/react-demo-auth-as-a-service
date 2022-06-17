@@ -36,7 +36,7 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { policy2 } = useSelector((state: any) => state.policy);
+  const { policyState } = useSelector((state: any) => state.policy);
   const params: Readonly<Params<string>> = useParams();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
   }, []);
 
   useEffect(() => {
-    if (type === "edit") setPolicies(policy2);
+    if (type === "edit") setPolicies(policyState);
   }, []);
 
   const handleRadio = (event: SelectChangeEvent) => {
@@ -112,7 +112,9 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
         }}
       >
         {" "}
-        {type === "create" ? "Create a Policy..." : `Edit: ${policy2.Name}... `}
+        {type === "create"
+          ? "Create a Policy..."
+          : `Edit: ${policyState.Name}... `}
       </p>
       <div style={center}>
         {type === "create" && (
@@ -124,13 +126,17 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
         )}
         <Input
           type={type}
-          isEdit={policy2.Name}
+          isEdit={policyState.Name}
           errorX={errorX}
           handleInputChange={handleInputChange}
           operation="Policy Name"
           _name="name"
         />
-        <RadioButton type={type} isEdit={policy2} handleRadio={handleRadio} />
+        <RadioButton
+          type={type}
+          isEdit={policyState}
+          handleRadio={handleRadio}
+        />
         <ButtonComp
           handleSubmit={handleSubmit}
           type={type}

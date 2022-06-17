@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 export const roleSlice = createSlice({
   name: "role",
   initialState: {
-    role2: {},
+    roleState: {},
   },
   reducers: {
     setRoleX: (state, action) => {
-      state.role2 = action.payload;
+      state.roleState = action.payload;
     },
   },
 });

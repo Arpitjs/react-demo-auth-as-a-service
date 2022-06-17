@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 export const permissionSlice = createSlice({
   name: "permission",
   initialState: {
-    permisison2: {},
+    permissionState: {},
   },
   reducers: {
     setPermission: (state, action) => {
-      state.permisison2 = action.payload;
+      state.permissionState = action.payload;
     },
   },
 });

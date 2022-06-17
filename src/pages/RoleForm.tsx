@@ -32,7 +32,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { role2 } = useSelector((state: any) => state.role);
+  const { roleState } = useSelector((state: any) => state.role);
   const params: Readonly<Params<string>> = useParams();
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
   }, []);
 
   useEffect(() => {
-    if (type === "edit") setRoles(role2);
+    if (type === "edit") setRoles(roleState);
   }, []);
 
   function handleBack() {
@@ -99,7 +99,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
         }}
       >
         {" "}
-        {type === "create" ? "Create a Role..." : `Edit: ${role2.Name}... `}
+        {type === "create" ? "Create a Role..." : `Edit: ${roleState.Name}... `}
       </p>
       <div style={center}>
         {type === "create" && (
@@ -111,7 +111,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
         )}
         <Input
           type={type}
-          isEdit={role2.Name}
+          isEdit={roleState.Name}
           errorX={errorX}
           handleInputChange={handleInputChange}
           operation="Role Name"
