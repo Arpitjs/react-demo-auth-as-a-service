@@ -1,24 +1,22 @@
 import { SelectChangeEvent } from "@mui/material/Select";
 import { FC, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import ButtonAppBar from "../Nav";
+import ButtonAppBar from "../components/Nav";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { setPolicy } from "../redux/policyReducer";
 import client from "../utils/authClient";
-import axios from "axios";
-import { PermissionType, PolicyType } from "../interfaces";
+import { PolicyType } from "../interfaces";
 import { center } from "../utils/reusable_styles";
 import Input from "../components/Input";
-import RadioButton from "../components/RadioButton";
 import ButtonComp from "../components/Button";
 import SelectComponent2 from "../components/Select2";
 
 const RoleForm: FC<{ type: string }> = ({ type }) => {
-  const { permission, policy } = client;
+  const { policy, role } = client;
   const [policies, setPolicies] = useState<PolicyType[]>([]);
-  const [role, setRole] = useState<any>([]);
+  const [roles, setRoles] = useState<any>([]);
   const [errorX, setErrorX] = useState({
     error: false,
     helperText: "",
@@ -45,7 +43,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
   }, []);
 
   useEffect(() => {
-    if (type === "edit") setRole(role2);
+    if (type === "edit") setRoles(role2);
   }, []);
 
   function handleBack() {
@@ -55,7 +53,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setRole({ name: value });
+    setRoles({ name: value });
     value === ""
       ? setErrorX({
           error: true,
@@ -69,15 +67,13 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
     let text = "";
     if (type === "create") {
       const toSend = {
-        ...role,
+        ...roles,
         policyid: selected,
       };
-      await axios.post(`http://localhost:8080/v1/roles/`, toSend);
-      // await policy.createWithAllowOrDeny(toSend);
+      await role.create(toSend);
       text = "created";
     } else {
-      // if (params.id) await role.update(params.id, policies);
-      await axios.put(`http://localhost:8080/v1/roles/${params.id}`, role);
+      if (params.id) await role.update(params.id, roles);
       text = "updated";
     }
     toast.success(`role ${text}!`);
@@ -125,7 +121,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
           handleSubmit={handleSubmit}
           type={type}
           errorX={errorX}
-          toValidate={[role.name, true]}
+          toValidate={[roles.name, true]}
         />
       </div>
     </div>

@@ -19,7 +19,6 @@ import { useDispatch } from "react-redux";
 import { setPermission } from "../redux/permissionReducer";
 import { toast } from "react-toastify";
 import client from "../utils/authClient";
-import axios from "axios";
 import { PermissionType, PolicyType } from "../interfaces";
 import { imgStyle } from "../utils/reusable_styles";
 
@@ -33,12 +32,12 @@ function Row(props: {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  function handleNavigate(p: any) {
+  function handleNavigate(p: PermissionType) {
     navigate(`/edit-permission/${p.ID}`);
     dispatch(setPermission(p));
   }
 
-  async function handleDelete(p: any) {
+  async function handleDelete(p: PermissionType) {
     await permission.delete(p.ID);
     setPermissions(await permission.getAll());
     toast.warning("Permission deleted!");
@@ -104,16 +103,14 @@ function Row(props: {
 }
 
 export default function ViewPermission() {
-  // const { permission } = client;
+  const { permission } = client;
   const [permissions, setPermissions] = useState<any>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const allPermissions = await axios.get(
-        "http://localhost:8080/v1/permissions/?populate=policy",
-      );
-      setPermissions(allPermissions.data);
+      const allPermissions = await permission.getAllPermissionsWithPolicy();
+      setPermissions(allPermissions);
     })();
   }, []);
 
@@ -143,7 +140,7 @@ export default function ViewPermission() {
                 <Row
                   key={p.ID}
                   row={p}
-                  permission={permissions}
+                  permission={permission}
                   setPermissions={setPermissions}
                 />
               ))}

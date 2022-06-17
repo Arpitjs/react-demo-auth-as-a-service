@@ -1,13 +1,12 @@
 import { SelectChangeEvent } from "@mui/material/Select";
 import { FC, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import ButtonAppBar from "../Nav";
+import ButtonAppBar from "../components/Nav";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { setPolicy } from "../redux/policyReducer";
 import client from "../utils/authClient";
-import axios from "axios";
 import { PermissionType } from "../interfaces";
 import { center } from "../utils/reusable_styles";
 import Input from "../components/Input";
@@ -81,19 +80,13 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
   async function handleSubmit() {
     let text = "";
     if (type === "create") {
-      const toSend = {
+      await policy.createWithAllowOrDeny({
         ...policies,
         permissionid: selected,
-      };
-      await axios.post(`http://localhost:8080/v1/policies/`, toSend);
-      // await policy.createWithAllowOrDeny(toSend);
+      });
       text = "created";
     } else {
-      // if (params.id) await policy.updateWithAllowOrDeny(params.id, policies);
-      await axios.put(
-        `http://localhost:8080/v1/policies/${params.id}`,
-        policies,
-      );
+      if (params.id) await policy.updateWithAllowOrDeny(params.id, policies);
       text = "updated";
     }
     toast.success(`policy ${text}!`);

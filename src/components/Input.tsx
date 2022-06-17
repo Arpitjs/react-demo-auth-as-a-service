@@ -1,10 +1,15 @@
 import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
-import { errorInterface, PermissionType, PolicyType } from "../interfaces";
+import {
+  errorInterface,
+  PermissionType,
+  PolicyType,
+  RoleType,
+} from "../interfaces";
 
 interface InputProps {
   type: string;
-  isEdit: PolicyType | PermissionType;
+  isEdit: PolicyType | PermissionType | RoleType;
   errorX: errorInterface;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   operation: string;

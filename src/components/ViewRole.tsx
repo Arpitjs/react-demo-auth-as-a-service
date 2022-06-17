@@ -18,13 +18,18 @@ import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import client from "../utils/authClient";
-import axios from "axios";
-import { PolicyType } from "../interfaces";
+import { PolicyType, RoleType } from "../interfaces";
 import { imgStyle } from "../utils/reusable_styles";
 import { setRoleX } from "../redux/roleReducer";
 
-function Row(props: any) {
-  const { row, role, setRoles } = props;
+interface rowType {
+  row: RoleType;
+  role: any;
+  setRoles: any;
+}
+
+function Row(props: rowType) {
+  const { row, role, setRoles }: rowType = props;
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -34,8 +39,8 @@ function Row(props: any) {
     dispatch(setRoleX(r));
   }
 
-  async function handleDelete(p: any) {
-    await role.delete(p.ID);
+  async function handleDelete(r: any) {
+    await role.delete(r.ID);
     setRoles(await role.getAll());
     toast.warning("Role deleted!");
   }
@@ -99,16 +104,14 @@ function Row(props: any) {
 }
 
 export default function ViewRole() {
-  const { permission, role } = client;
+  const { role } = client;
   const [roles, setRoles] = useState<any>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
-      const allroles = await axios.get(
-        "http://localhost:8080/v1/roles/?populate=policy",
-      );
-      setRoles(allroles.data);
+      const allRoles = await role.getAllRolesWithPolicies();
+      setRoles(allRoles);
     })();
   }, []);
 

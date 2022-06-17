@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import Button from "@mui/material/Button";
-import ButtonAppBar from "../Nav";
+import ButtonAppBar from "../components/Nav";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
