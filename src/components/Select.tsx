@@ -73,7 +73,7 @@ export default function SelectComponent({
           renderValue={toRender}
           MenuProps={MenuProps}
         >
-          {permissions &&
+          {permissions && permissions.length ? (
             permissions.map((p: any) => (
               <MenuItem
                 key={p.ID}
@@ -82,7 +82,10 @@ export default function SelectComponent({
               >
                 {p.Resource}
               </MenuItem>
-            ))}
+            ))
+          ) : (
+            <MenuItem>no permissions to pick from.</MenuItem>
+          )}
         </Select>
       </FormControl>
     </div>
