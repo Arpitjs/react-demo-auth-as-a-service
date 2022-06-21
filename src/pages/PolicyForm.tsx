@@ -15,8 +15,9 @@ import ButtonComp from "../components/Button";
 import SelectComponent from "../components/Select";
 
 const PolicyForm: FC<{ type: string }> = ({ type }) => {
-  const { permission, policy } = client;
+  const { permission, policy, policyPermission } = client;
   const [permissions, setPermissions] = useState<PermissionType[]>([]);
+  const [pp, setPp] = useState<string>("");
   const [policies, setPolicies] = useState({
     name: "",
     kind: "",
@@ -48,6 +49,16 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
 
   useEffect(() => {
     if (type === "edit") setPolicies(policyState);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const all = await policyPermission.getAll();
+      const matchedPolicy = all.find((a: any) => a.PolicyId === policyState.ID);
+      if (matchedPolicy) {
+        setPp(matchedPolicy.ID);
+      }
+    })();
   }, []);
 
   const handleRadio = (event: SelectChangeEvent) => {
@@ -86,6 +97,17 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
       });
       text = "created";
     } else {
+      if (pp && selected.length) {
+        await policyPermission.update(pp, {
+          policyid: [policyState.ID],
+          permissionid: selected,
+        });
+      } else if (selected.length && !pp) {
+        await policyPermission.create({
+          policyid: [policyState.ID],
+          permissionid: selected,
+        });
+      }
       if (params.id) await policy.updateWithAllowOrDeny(params.id, policies);
       text = "updated";
     }
@@ -115,13 +137,11 @@ const PolicyForm: FC<{ type: string }> = ({ type }) => {
         {type === "create" ? "Create a Policy" : `Edit: ${policyState.Name} `}
       </p>
       <div style={center}>
-        {type === "create" && (
-          <SelectComponent
-            permissions={permissions}
-            handleChange={handleChange}
-            selected={selected}
-          />
-        )}
+        <SelectComponent
+          permissions={permissions}
+          handleChange={handleChange}
+          selected={selected}
+        />
         <Input
           type={type}
           isEdit={policyState.Name}

@@ -2179,10 +2179,10 @@
   "resolved" "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
   "version" "2.0.4"
 
-"@lf-network/auth-sdk-js@^1.7.0":
-  "integrity" "sha512-S33kmg/QpKz9yLIlaUp6sxXMMI5GfFkrUEPch8+Ha0qNFXuIlcmU7fp6WADUi/ToVueilk0L8XqFxCy+rF14tg=="
-  "resolved" "https://npm.pkg.github.com/download/@lf-network/auth-sdk-js/1.7.0/e9aa7ceb1a07a37ca41e6bcceaf9fee1a14d4826ae63d13b84432bbeea819470"
-  "version" "1.7.0"
+"@lf-network/auth-sdk-js@^1.9.1":
+  "integrity" "sha512-uGSzG7rlB4dwtZrXCc1KVD59gRX9taKCzSiPc6w1+1KvrKNhNWOkQnIexB2dzjzger9RFbGKo0pux2k7xPGhbg=="
+  "resolved" "https://npm.pkg.github.com/download/@lf-network/auth-sdk-js/1.9.1/e0f8f035a1b4ebd4d21b293b88a5548321859e32f548d385713d69ae740bdeca"
+  "version" "1.9.1"
   dependencies:
     "axios" "^0.27.2"
 

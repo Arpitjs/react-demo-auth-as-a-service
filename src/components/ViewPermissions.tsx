@@ -109,7 +109,7 @@ export default function ViewPermission() {
 
   useEffect(() => {
     (async () => {
-      const allPermissions = await permission.getAllPermissionsWithPolicy();
+      const allPermissions = await permission.getAllPermissionsWithPolicies();
       setPermissions(allPermissions);
     })();
   }, []);

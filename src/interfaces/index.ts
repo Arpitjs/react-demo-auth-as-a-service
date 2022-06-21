@@ -2,6 +2,7 @@ export interface PolicyType {
   ID: string;
   Name: string;
   Kind: string;
+  Permissions?: PermissionType[];
 }
 
 export interface PermissionType {

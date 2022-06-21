@@ -14,7 +14,7 @@ import ButtonComp from "../components/Button";
 import SelectComponent2 from "../components/Select2";
 
 const RoleForm: FC<{ type: string }> = ({ type }) => {
-  const { policy, role } = client;
+  const { policy, role, policyRole } = client;
   const [policies, setPolicies] = useState<PolicyType[]>([]);
   const [roles, setRoles] = useState<any>([]);
   const [errorX, setErrorX] = useState({
@@ -24,7 +24,7 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
   });
 
   const [selected, setSelected] = useState<string[]>([]);
-
+  const [policyRoleId, setPolicyRoleId] = useState<string>("");
   const handleChange = (event: SelectChangeEvent<any[]>) => {
     const { value } = event.target;
     setSelected(typeof value === "string" ? value.split(",") : value);
@@ -44,6 +44,14 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
 
   useEffect(() => {
     if (type === "edit") setRoles(roleState);
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const all = await policyRole.getAll();
+      const matchedRole = all.find((a: any) => a.RoleId === roleState.ID);
+      if (matchedRole) setPolicyRoleId(matchedRole.ID);
+    })();
   }, []);
 
   function handleBack() {
@@ -73,6 +81,17 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
       await role.create(toSend);
       text = "created";
     } else {
+      if (policyRoleId && selected.length) {
+        await policyRole.update(policyRoleId, {
+          roleid: [roleState.ID],
+          policyid: selected,
+        });
+      } else if (selected.length && !policyRoleId) {
+        await policyRole.create({
+          roleid: [roleState.ID],
+          policyid: selected,
+        });
+      }
       if (params.id) await role.update(params.id, roles);
       text = "updated";
     }
@@ -102,13 +121,11 @@ const RoleForm: FC<{ type: string }> = ({ type }) => {
         {type === "create" ? "Create a Role" : `Edit: ${roleState.Name} `}
       </p>
       <div style={center}>
-        {type === "create" && (
-          <SelectComponent2
-            policies={policies}
-            handleChange={handleChange}
-            selected={selected}
-          />
-        )}
+        <SelectComponent2
+          policies={policies}
+          handleChange={handleChange}
+          selected={selected}
+        />
         <Input
           type={type}
           isEdit={roleState.Name}
